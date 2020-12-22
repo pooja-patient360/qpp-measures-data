@@ -139,6 +139,31 @@ describe('formatBenchmarkRecord', function() {
       assert.equal(benchmark1.benchmarkYear, 2002);
       assert.equal(benchmark2.benchmarkYear, 2004);
     });
+    it('should have the correct isPriority based on the options argument', function() {
+      const record = {
+        measureName: 'Diabetes: Hemoglobin A1c Poor Control',
+        qualityId: '1',
+        submissionMethod: 'eCQM',
+        measureType: 'Outcome',
+        benchmark: 'Y',
+        decile3: '54.67 - 35.91',
+        decile4: '35.90 - 25.63',
+        decile5: '25.62 - 19.34',
+        decile6: '19.33 - 14.15',
+        decile7: '14.14 -  9.10',
+        decile8: '9.09 -  3.34',
+        decile9: '3.33 -  0.01',
+        decile10: '0',
+        isToppedOut: 'No',
+        isToppedOutByProgram: 'No',
+        isHighPriority: 'No'
+      };
+      const benchmark1 = formatBenchmarkRecord(record, {benchmarkYear: 2002, performanceYear: 2021});
+      const benchmark2 = formatBenchmarkRecord({...record, isHighPriority: 'Y'}, {benchmarkYear: 2004, performanceYear: 2021});
+
+      assert.equal(benchmark1.isHighPriority, false);
+      assert.equal(benchmark2.isHighPriority, true);
+    });
     it('should have the correct performanceYear based on the options argument', function() {
       const record = {
         measureName: 'Diabetes: Hemoglobin A1c Poor Control',
